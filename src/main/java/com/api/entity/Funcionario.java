@@ -26,14 +26,12 @@ import javax.persistence.Transient;
 import com.api.enums.PerfilEnum;
 
 import lombok.Data;
-import lombok.ToString;
 
 @Data
-@ToString
 @Entity
 @Table(name = "funcionario")
 public class Funcionario implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -60,38 +58,39 @@ public class Funcionario implements Serializable {
 	private Date dataCriacao;
 	@Column(name = "data_atualizacao", nullable = false)
 	private Date dataAtualizacao;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "empresa_id")
 	private Empresa empresa;
-	
-	@OneToMany(mappedBy = "funcionario",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+	@OneToMany(mappedBy = "funcionario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Lancamento> lancamentos;
-	
+
 	@PrePersist
 	public void prePersit() {
 		final Date atual = new Date();
 		dataCriacao = atual;
 		dataAtualizacao = atual;
 	}
-	
+
 	@PreUpdate
 	public void preUpdate() {
 		dataAtualizacao = new Date();
 	}
-	
+
 	@Transient
-	public Optional<BigDecimal> getValorHoraOpt(){
+	public Optional<BigDecimal> getValorHoraOpt() {
 		return Optional.ofNullable(valorHora);
 	}
-	
+
 	@Transient
-	public Optional<Float> getQuantidadeHorasTrabalhoDiaOpt(){
+	public Optional<Float> getQuantidadeHorasTrabalhoDiaOpt() {
 		return Optional.ofNullable(quantidadeHorasTrabalhoDia);
 	}
-	
+
 	@Transient
-	public Optional<Float> getQuantidadeHorasAlmocoOpt(){
+	public Optional<Float> getQuantidadeHorasAlmocoOpt() {
 		return Optional.ofNullable(quantidadeHorasAlmoco);
 	}
+
 }
